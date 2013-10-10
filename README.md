@@ -7,9 +7,9 @@ Very easy to set up. I recommend using `virtualenv`.
 * Run `virtualenv venv`
 * Create config.yml with:
 
-    host: irc.freenode.net
-    port: 6667
-    channels: ["##mcrushurl-test"]
+`host: irc.freenode.net
+port: 6667
+channels: ["##mcrushurltest"]`
 
 * Run `venv/bin/pip install -r requirements.txt`
 * Run `git submodule init`, then `git submodule update`
