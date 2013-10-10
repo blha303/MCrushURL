@@ -1,4 +1,7 @@
-twistd.log
-twistd.pid
+log
+restart
+start
+stop
+twistd.*
 venv/
 config.yml
