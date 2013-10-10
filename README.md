@@ -1,7 +1,7 @@
 MCrushURL
 ---------
 
-Very easy to set up. I recommend using `virtualenv`.
+Very easy to set up. I recommend using virtualenv.
 
 * Clone repository, or download zipball/tarball.
 * Run `virtualenv venv`
