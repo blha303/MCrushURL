@@ -1,0 +1,3 @@
+[submodule "PyCrush"]
+	path = PyCrush
+	url = https://github.com/blha303/PyCrush

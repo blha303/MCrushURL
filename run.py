@@ -1,5 +1,4 @@
-import sys, re, urllib2, json, random, unicodedata, yaml
-from urllib import urlencode
+import sys, unicodedata, yaml, PyCrush
 from HTMLParser import HTMLParser
 from twisted.internet import reactor, task, defer, protocol
 from twisted.python import log
@@ -28,21 +27,16 @@ class MediaCrushProtocol(irc.IRCClient):
         if message.split(" ")[0] == "!url" and len(message.split(" ")) > 1 and "http" in message:
             print "Trying to send request"
             url = message[5:]
-            try:
-                data = json.loads(urllib2.urlopen("https://mediacru.sh/api/upload/url", urlencode({'url': url})).read())
-                print "Request successful: " + json.dumps(data)
-                self._send_message(unicodedata.normalize('NFKD', "https://mediacru.sh/" + data["hash"]).encode('ascii', 'ignore'), channel, nick=nick)
-            except urllib2.HTTPError as e:
-                print "Error. Trying to get data."
-                data = json.loads(e.read())
-                if data:
-                    print "Got data: " + json.dumps(data)
-                else:
-                    print "Couldn't get data."
-                if "hash" in data:
-                    self._send_message(unicodedata.normalize('NFKD', "https://mediacru.sh/" + data["hash"]).encode('ascii', 'ignore'), channel, nick=nick)
-                else:
-                    self._send_message(" ".join(str(e).split(": ")[1:]).title(), channel, nick=nick)
+            mc = PyCrush.API()
+            data = mc.upload_url(url=url)
+            if "hash" in data[0]:
+                self._send_message("https://mediacru.sh/" + data[0]["hash"].encode('ascii', 'ignore'), channel, nick=nick)
+            else:
+                errors = {409: "The file was already uploaded.",
+                          420: "The rate limit was exceeded. Enhance your calm.",
+                          415: "The file extension is not acceptable."}
+                if data[1] in errors:
+                    self._send_message(errors[data[1]], channel, nick=nick)
 
     def _send_message(self, msg, target, nick=None):
         if nick:
