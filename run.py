@@ -28,7 +28,7 @@ class MediaCrushProtocol(irc.IRCClient):
             print "Trying to send request"
             url = message[5:]
             try:
-                mc = PyCrush.Media.upload(message)
+                mc = PyCrush.Media.upload(url)
                 mc.ready_block()
                 self._send_message("https://mediacru.sh/" + mc.hash.encode('ascii', 'ignore'), channel, nick=nick)
             except PyCrush.PyCrushException, e:
