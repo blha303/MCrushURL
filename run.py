@@ -34,7 +34,8 @@ class MediaCrushProtocol(irc.IRCClient):
             else:
                 errors = {409: "The file was already uploaded.",
                           420: "The rate limit was exceeded. Enhance your calm.",
-                          415: "The file extension is not acceptable."}
+                          415: "The file extension is not acceptable.",
+                          404: "The destination URL was not found."}
                 if data[1] in errors:
                     self._send_message(errors[data[1]], channel, nick=nick)
 
