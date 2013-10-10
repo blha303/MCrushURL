@@ -7,8 +7,8 @@ Very easy to set up. I recommend using `virtualenv`.
 * Run `virtualenv venv`
 * Create config.yml with:
 
-`host: irc.freenode.net
-port: 6667
+`host: irc.freenode.net    
+port: 6667    
 channels: ["##mcrushurltest"]`
 
 * Run `venv/bin/pip install -r requirements.txt`
