@@ -27,17 +27,12 @@ class MediaCrushProtocol(irc.IRCClient):
         if message.split(" ")[0] == "!url" and len(message.split(" ")) > 1 and "http" in message:
             print "Trying to send request"
             url = message[5:]
-            mc = PyCrush.API()
-            data = mc.upload_url(url=url)
-            if "hash" in data[0]:
-                self._send_message("https://mediacru.sh/" + data[0]["hash"].encode('ascii', 'ignore'), channel, nick=nick)
-            else:
-                errors = {409: "The file was already uploaded.",
-                          420: "The rate limit was exceeded. Enhance your calm.",
-                          415: "The file extension is not acceptable.",
-                          404: "The destination URL was not found."}
-                if data[1] in errors:
-                    self._send_message(errors[data[1]], channel, nick=nick)
+            try:
+                mc = PyCrush.Media.upload(message)
+                mc.ready_block()
+                self._send_message("https://mediacru.sh/" + mc.hash.encode('ascii', 'ignore'), channel, nick=nick)
+            except PyCrush.PyCrushException, e:
+                self._send_message(e.message, channel, nick=nick)
 
     def _send_message(self, msg, target, nick=None):
         if nick:
