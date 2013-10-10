@@ -1,0 +1,4 @@
+twistd.log
+twistd.pid
+venv/
+config.yml
